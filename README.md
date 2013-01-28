@@ -3,7 +3,7 @@ AffiliateRedirection
 
 With AffiliateRedirection you will increase the user experience in iOS Apps. This classes open Affiliate links avoiding the double jump between App -> Safari -> App Store, or opening the `SKStoreProductViewController` with the proper app after doing the URL redirection of the affiliate link. Get revenues without leaving the App.
 
-This Class works opening a NSURLConnection asynchronously and given the final URL when the redirection is complete.
+This Class works opening a `NSURLConnection` asynchronously and given the final URL when the redirection is complete.
 
 It works with affiliate links like LinkShare, TradeDoubler, Georiot,...
 
@@ -53,13 +53,23 @@ Click on the `+` button to Add `StoreKit.framework`. Set it as `Optional` is the
 
 * Also `NSURL+Itunes.h` and `NSURL+Itunes.m` is a category of NSURL. This category is used to check if a URL is an iTunes URL as well as a parser to get the productID and the affiliateID of an iTunes URL.
 
-* Example 
+* Example (iOS 6 and lower)
 
         [affilateRedirection openAffiliateRedirectionWith:affiliateLink
                                     productViewController:self
                                                     block:^(NSURL *itunesURL, NSError *error) {
-            if (!error) {
-             //Success code here   
+            if (error) {
+                 if (!itunesURL) {
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                 message:error.localizedDescription
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil, nil];
+                    [av show];
+                }
+                else {
+                    [[UIApplication sharedApplication] openURL:itunesURL];
+                }            
             }
                                      }];
 
