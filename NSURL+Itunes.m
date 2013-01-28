@@ -34,7 +34,7 @@ NSString * const ItunesDomain = @"itunes.apple.com";
 - (NSNumber*)affiliateID
 {
     if ([[self class] isItunesURL:self]) {
-        NSArray *params = [self.lastPathComponent componentsSeparatedByString:@"&"];
+        NSArray *params = [self.query componentsSeparatedByString:@"&"];
         for (NSString *param in params) {
             if ([param hasPrefix:@"affId"]) {//Value of the param pair (Ex: affId=123123)
                 NSArray *keyValue = [param componentsSeparatedByString:@"="];

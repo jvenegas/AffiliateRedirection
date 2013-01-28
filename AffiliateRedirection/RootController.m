@@ -150,7 +150,7 @@
             [loadingAppStoreView removeFromSuperview];
             
             if (error) {
-                if (error.code != kAFErrorAffiliateItunesURLNotFound) {
+                if (!itunesURL) {
                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                  message:error.localizedDescription
                                                                 delegate:nil
@@ -160,6 +160,7 @@
                     [av show];
                 }
                 else {
+                    
                     [[UIApplication sharedApplication] openURL:itunesURL];
                 }
             }

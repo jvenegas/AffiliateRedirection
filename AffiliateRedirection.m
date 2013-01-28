@@ -205,7 +205,15 @@ NSInteger const kAFErrorAffiliateItunesURLNotFound                      = 5;
             
         }
         else {
-            _block (iTunesURL, nil);
+            if (_delegate) {
+                NSError *error = [NSError errorWithDomain:kAFDomain
+                                                     code:kAFErrorAffiliateroductViewControllerDelegateNotFound
+                                                 userInfo:@{NSLocalizedDescriptionKey: @"Delegate does not respond to SKStoreProductViewControllerDelegate"}];
+                _block(iTunesURL, error);
+            }
+            else {
+                _block (iTunesURL, nil);
+            }
         }
     }
     else {
