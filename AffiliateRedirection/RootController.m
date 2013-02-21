@@ -68,7 +68,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 5;
+    return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -99,6 +99,9 @@
             
         case 4:
             title = @"No delegate";
+            break;
+        case 5 :
+            title = @"Bit.ly Short URL";
             break;
     }
     
@@ -137,6 +140,10 @@
             
         case 4:
             affiliateLink = [NSURL URLWithString:@"http://target.georiot.com/Proxy.ashx?grid=17342&id=uZpkajcoNlg&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=https%253A%252F%252Fitunes.apple.com%252Fus%252Fapp%252Fevernote%252Fid281796108%253Fmt%253D8%2526uo%253D4%2526partnerId%253D30"];
+            break;
+        case 5:
+            delegate = self;
+            affiliateLink = [NSURL URLWithString:@"http://bit.ly/VkZPjN"];
             break;
     }
     

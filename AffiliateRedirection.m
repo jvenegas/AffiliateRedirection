@@ -184,7 +184,7 @@ NSInteger const kAFErrorAffiliateItunesURLNotFound                      = 5;
     //
     
     NSURL *url = response.URL;
-    
+
     if (url) {
         redirectURL = url;
     }
@@ -197,6 +197,12 @@ NSInteger const kAFErrorAffiliateItunesURLNotFound                      = 5;
         return nil;
     }
     else {
+        if ([NSURL isItunesURL:request.URL]) {
+            redirectURL = request.URL;
+            [connection cancel];
+            [self connectionDidFinishLoading:connection];
+            return nil;
+        }
         
         return request;
     }

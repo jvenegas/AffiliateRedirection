@@ -29,7 +29,7 @@ extern NSInteger const kAFErrorAffiliateItunesURLNotFound;
 typedef void (^AffiliateRedirectionBlock)(NSURL *itunesURL, NSError *error);
 
 
-@interface AffiliateRedirection : NSObject
+@interface AffiliateRedirection : NSObject <NSURLConnectionDataDelegate>
 {
     NSURL *redirectURL;
     __unsafe_unretained id _delegate;
