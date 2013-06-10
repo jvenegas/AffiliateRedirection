@@ -91,17 +91,23 @@ NSInteger const kAFErrorAffiliateItunesURLNotFound                      = 5;
             [self openAffiliateRedirectionWithBlock:block];
         }
         else {
-            
-            block(nil, [NSError errorWithDomain:kAFDomain
-                                           code:kAFErrorAffiliateroductViewControllerDelegateNotFound
-                                       userInfo:@{NSLocalizedDescriptionKey: @"Delegate does not respond to SKStoreProductViewControllerDelegate"}]);
+            //Does the redirection even if the controller is not set up
+            AffiliateRedirectionBlock oldBlock = block;
+            [self openAffiliateRedirectionWithBlock:^(NSURL *redirectedURL, NSError *error) {
+                oldBlock(redirectedURL, [NSError errorWithDomain:kAFDomain
+                                                            code:kAFErrorAffiliateroductViewControllerDelegateNotFound
+                                                        userInfo:@{NSLocalizedDescriptionKey: @"Delegate does not respond to SKStoreProductViewControllerDelegate"}]);
+            }];
         }
     }
     else {
-        
-        block(nil, [NSError errorWithDomain:kAFDomain
-                                       code:kAFErrorAffiliatePresentModalViewControllerNotFound
-                                   userInfo:@{NSLocalizedDescriptionKey: @"Delegate does not respond to presentViewController:animated:completion:"}]);
+        //Does the redirection even if the controller is not set up
+        AffiliateRedirectionBlock oldBlock = block;
+        [self openAffiliateRedirectionWithBlock:^(NSURL *redirectedURL, NSError *error) {
+            oldBlock(redirectedURL, [NSError errorWithDomain:kAFDomain
+                                                        code:kAFErrorAffiliatePresentModalViewControllerNotFound
+                                                    userInfo:@{NSLocalizedDescriptionKey: @"Delegate does not respond to presentViewController:animated:completion:"}]);
+        }];
     }
 }
 
