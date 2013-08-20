@@ -7,7 +7,7 @@ This Class works opening a `NSURLConnection` asynchronously and given the final 
 
 It works with affiliate links like LinkShare, TradeDoubler, Georiot,...
 
-The classes are tested iOS 4.3+, in ARC environments.
+The library has been tested iOS 4.3+ and ARC environments.
 
 
 ## Set up your Xcode project
