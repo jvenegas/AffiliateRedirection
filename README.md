@@ -9,6 +9,7 @@ It works with affiliate links like LinkShare, TradeDoubler, Georiot,...
 
 The library has been tested iOS 4.3+ and ARC environments.
 
+__*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc@ compiler flag to @ODRefreshControl.m@ in Target Settings > Build Phases > Compile Sources.__
 
 ## Set up your Xcode project
 
