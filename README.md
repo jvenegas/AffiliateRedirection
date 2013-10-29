@@ -1,7 +1,8 @@
 AffiliateRedirection
 ====================
 
-With AffiliateRedirection you will increase the user experience in iOS Apps. This classes open Affiliate links avoiding the double jump between App -> Safari -> App Store, or opening the `SKStoreProductViewController` with the proper app after doing the URL redirection of the affiliate link. Get revenues without leaving the App.
+With AffiliateRedirection you will increase the user experience in iOS Apps. This classes open Affiliate links avoiding the double jump (stutter step) between App -> Safari -> App Store, or opening the `SKStoreProductViewController` with the proper app after doing the URL redirection of the affiliate link. <del>Get revenues without leaving the App.</del>
+OPENING THE iTUNES LINK IN YOUR APP WON"T GIVE YOU ANY REVENUE, BECAUSE THE "affiliate ID" or "affiliate token" CAN NOT BE PASS TO THE `SKStoreProductViewController`.
 
 This Class works opening a `NSURLConnection` asynchronously and given the final URL when the redirection is complete.
 
