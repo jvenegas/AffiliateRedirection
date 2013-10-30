@@ -24,6 +24,9 @@ NSInteger const kAFErrorAffiliateroductViewControllerDelegateNotFound   = 2;
 NSInteger const kAFErrorAffiliatePresentModalViewControllerNotFound     = 3;
 NSInteger const kAFErrorAffiliateProductIDNotFound                      = 4;
 NSInteger const kAFErrorAffiliateItunesURLNotFound                      = 5;
+NSInteger const kAFErrorAffiliateItunesURLSchemaNotFound                = 6;
+NSInteger const kAFErrorAffiliateAppStoreDoNotRespond                   = 7;
+
 
 @interface AffiliateRedirection(Private)
 
@@ -77,6 +80,41 @@ NSInteger const kAFErrorAffiliateItunesURLNotFound                      = 5;
     else {
         self.block = block;
         [self openAffiliateURL];
+    }
+}
+
+- (void)openAffiliateRedirectionOnAppStoreWithBlock:(void (^)(NSError *))block
+{
+    if (!_affilateURL) {
+        block([NSError errorWithDomain:kAFDomain
+                                       code:kAFErrorAffiliateURLMissing
+                                   userInfo:@{NSLocalizedDescriptionKey: @"Affiliate URL not founded"}]);
+    }
+    else {
+        [self openAffiliateRedirectionWithBlock:^(NSURL *itunesURL, NSError *error) {
+            NSString *schema = [itunesURL.scheme stringByAppendingString:@"://"];
+            NSRange range = [itunesURL.absoluteString rangeOfString:schema];
+            if (range.location == NSNotFound) {
+                //Wrong URL
+                block([NSError errorWithDomain:kAFDomain
+                                          code:kAFErrorAffiliateItunesURLSchemaNotFound
+                                      userInfo:@{NSLocalizedDescriptionKey: @"Itunes URL schema not founded"}]);
+            } else {
+                NSString *noSchemaURL = [itunesURL.absoluteString stringByReplacingCharactersInRange:range withString:@""];
+                NSString *absoluteAppStoreURL = [NSString stringWithFormat:@"%@://%@", @"itms-appss", noSchemaURL];
+                NSURL *appStoreURL = [NSURL URLWithString:absoluteAppStoreURL];
+                if ( [[UIApplication sharedApplication] canOpenURL:appStoreURL] ) {
+                    [[UIApplication sharedApplication] openURL:appStoreURL];
+                    block(nil);
+                }
+                else {
+                    block([NSError errorWithDomain:kAFDomain
+                                              code:kAFErrorAffiliateAppStoreDoNotRespond
+                                          userInfo:@{NSLocalizedDescriptionKey: @"App Store can't be opened"}]);
+                }
+                
+            }
+        }];
     }
 }
 

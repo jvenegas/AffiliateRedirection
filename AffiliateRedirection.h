@@ -25,6 +25,8 @@ extern NSInteger const kAFErrorAffiliateroductViewControllerDelegateNotFound;
 extern NSInteger const kAFErrorAffiliatePresentModalViewControllerNotFound;
 extern NSInteger const kAFErrorAffiliateProductIDNotFound;
 extern NSInteger const kAFErrorAffiliateItunesURLNotFound;
+extern NSInteger const kAFErrorAffiliateItunesURLSchemaNotFound;
+extern NSInteger const kAFErrorAffiliateAppStoreDoNotRespond;
 
 typedef void (^AffiliateRedirectionBlock)(NSURL *itunesURL, NSError *error);
 
@@ -83,7 +85,14 @@ typedef void (^AffiliateRedirectionBlock)(NSURL *itunesURL, NSError *error);
  */
 
 - (void)openAffiliateRedirectionWithProductViewController:(id)delegate
-                                                    block:(AffiliateRedirectionBlock)block;
+                                                    block:(AffiliateRedirectionBlock)block __attribute__((deprecated));
 
+/*
+ Get a URL after the asynchronously redirection and opens it on the App Store.
+ 
+ @param block The block to execute. The block should have the following argument signature:(NSError *error) error will be nil if the redirection and the app store can be opened successfully.
+ */
+
+- (void)openAffiliateRedirectionOnAppStoreWithBlock:(void (^)(NSError *error))block;
 
 @end

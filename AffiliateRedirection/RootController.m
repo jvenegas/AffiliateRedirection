@@ -27,12 +27,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.title = @"Affiliate Link Test";
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,7 +64,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 6;
+    return 7;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -103,6 +99,9 @@
         case 5 :
             title = @"Bit.ly Short URL";
             break;
+        case 6 :
+            title = @"Twitter on App Store (tradedoubler)";
+            break;
     }
     
     cell.textLabel.text = title;
@@ -114,9 +113,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     AffiliateRedirection *affilateRedirection = [[AffiliateRedirection alloc] init];
     id delegate = nil;
     NSURL *affiliateLink = nil;
+    UIView *loadingAppStoreView = [self getLoadingView];
+    [self.view addSubview:loadingAppStoreView];
     
     switch (indexPath.row) {
         case 0:
@@ -145,10 +148,27 @@
             delegate = self;
             affiliateLink = [NSURL URLWithString:@"http://bit.ly/VkZPjN"];
             break;
+        case 6:
+        {
+            affilateRedirection.affilateURL = [NSURL URLWithString:@"http://clk.tradedoubler.com/click?p=23753&a=1611348&g=0&td_partnerId=2003&url=https://itunes.apple.com/fr/app/twitter/id333903271"];
+            [affilateRedirection openAffiliateRedirectionOnAppStoreWithBlock:^(NSError *error) {
+                [loadingAppStoreView removeFromSuperview];
+
+                if (error) {
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                 message:error.localizedDescription
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil,
+                                       nil];
+                    [av show];
+                }
+            }];
+            return;
+            break;
+        }
     }
-    
-    UIView *loadingAppStoreView = [self getLoadingView];
-    [self.view addSubview:loadingAppStoreView];
+
     
     [affilateRedirection openAffiliateRedirectionWith:affiliateLink
                                 productViewController:delegate
@@ -171,11 +191,7 @@
                     [[UIApplication sharedApplication] openURL:itunesURL];
                 }
             }
-                                                }];
-    
-    
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }];
 }
 
 #pragma mark - SKStore Product ViewController Delegate
